@@ -6,7 +6,7 @@ import { useTurniAdmin, useUpdateTurno } from '../../hooks/useTurni'
 import type { Profile } from '../../types/database'
 import { Section } from '../../components/Section'
 import { Banner } from '../../components/Banner'
-import { formatData, formatDuration, formatEuro, formatOrario } from '../../lib/format'
+import { formatData, formatDuration, formatEuro, formatOrario, formatRuolo } from '../../lib/format'
 import { ProfileEditDialog } from './ProfileEditDialog'
 
 export default function UtentiPage() {
@@ -55,8 +55,8 @@ export default function UtentiPage() {
                   <Table.Row key={p.id}>
                     <Table.Cell fontWeight="medium">{p.full_name}</Table.Cell>
                     <Table.Cell>
-                      <Badge colorPalette={p.role === 'admin' ? 'brand' : 'gray'}>
-                        {p.role === 'admin' ? 'Amministratore' : 'Operatore'}
+                      <Badge colorPalette={p.role === 'operatore' ? 'gray' : 'brand'}>
+                        {formatRuolo(p.role)}
                       </Badge>
                     </Table.Cell>
                     <Table.Cell textAlign="right">{p.tariffa_giornaliera != null ? formatEuro(p.tariffa_giornaliera) : '-'}</Table.Cell>

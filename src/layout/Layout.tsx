@@ -11,6 +11,7 @@ import {
   FiLogOut,
 } from 'react-icons/fi'
 import { useAuth } from '../auth/AuthContext'
+import { formatRuolo } from '../lib/format'
 
 interface NavItem {
   to: string
@@ -89,7 +90,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             {profile?.full_name ?? '...'}
           </Text>
           <Text fontSize="xs" color="gray.400" mb={3}>
-            {profile?.role === 'admin' ? 'Amministratore' : 'Operatore'}
+            {formatRuolo(profile?.role)}
           </Text>
           <Flex
             align="center"

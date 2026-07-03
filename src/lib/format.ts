@@ -2,6 +2,16 @@ export function formatEuro(value: number | null | undefined): string {
   return new Intl.NumberFormat('it-IT', { style: 'currency', currency: 'EUR' }).format(Number(value) || 0)
 }
 
+const RUOLO_LABEL: Record<string, string> = {
+  admin: 'Amministratore',
+  boss: 'Boss',
+  operatore: 'Operatore',
+}
+
+export function formatRuolo(role: string | null | undefined): string {
+  return RUOLO_LABEL[role ?? ''] ?? role ?? '-'
+}
+
 export function formatData(value: string | null | undefined): string {
   if (!value) return '-'
   const [year, month, day] = value.split('-').map(Number)

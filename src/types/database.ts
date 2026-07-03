@@ -1,4 +1,4 @@
-export type Ruolo = 'admin' | 'operatore'
+export type Ruolo = 'admin' | 'operatore' | 'boss'
 export type StatoGiornata = 'aperta' | 'chiusa'
 export type StatoStockRiga = 'attiva' | 'chiusa'
 export type CategoriaProdotto = 'crepes' | 'merce'

@@ -67,6 +67,7 @@ export function ProfileEditDialog({
                     <NativeSelect.Field value={role} onChange={(e) => setRole(e.target.value as Ruolo)}>
                       <option value="operatore">Operatore</option>
                       <option value="admin">Amministratore</option>
+                      <option value="boss">Boss</option>
                     </NativeSelect.Field>
                     <NativeSelect.Indicator />
                   </NativeSelect.Root>

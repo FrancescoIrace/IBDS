@@ -1,7 +1,8 @@
 -- IBDS - funzioni helper e trigger
 -- Da eseguire dopo 001_schema.sql.
 
--- Helper usato dalle policy RLS: true se l'utente loggato è admin.
+-- Helper usato dalle policy RLS: true se l'utente loggato è admin o boss
+-- (i due ruoli hanno permessi identici, "boss" è solo un'etichetta diversa).
 create or replace function public.is_admin()
 returns boolean
 language sql
@@ -10,7 +11,7 @@ stable
 set search_path = public
 as $$
   select exists (
-    select 1 from public.profiles where id = auth.uid() and role = 'admin'
+    select 1 from public.profiles where id = auth.uid() and role in ('admin', 'boss')
   );
 $$;
 
