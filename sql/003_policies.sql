@@ -72,27 +72,21 @@ create policy "prodotti_delete_admin" on public.prodotti
   for delete to authenticated using (public.is_admin());
 
 -- ---------------------------------------------------------------------------
--- giornate: qualunque utente loggato apre/chiude/corregge una giornata.
--- L'eliminazione è riservata all'admin per evitare perdite accidentali di
--- storico.
+-- giornate: solo admin/boss aprono ed eliminano una giornata; una volta
+-- aperta, qualunque utente loggato può contare crepes/stock e chiuderla
+-- (update resta aperto a tutti, serve anche per la chiusura di fine giornata).
 -- ---------------------------------------------------------------------------
 create policy "giornate_select_all" on public.giornate
   for select to authenticated using (true);
 
-create policy "giornate_insert_all" on public.giornate
-  for insert to authenticated with check (true);
+create policy "giornate_insert_admin" on public.giornate
+  for insert to authenticated with check (public.is_admin());
 
 create policy "giornate_update_all" on public.giornate
   for update to authenticated using (true) with check (true);
 
 create policy "giornate_delete_admin" on public.giornate
   for delete to authenticated using (public.is_admin());
-
--- Chiunque loggato può eliminare una giornata ANCORA APERTA (per annullare
--- un'apertura per errore, es. evento sbagliato). Le giornate chiuse restano
--- eliminabili solo dall'admin tramite la policy sopra.
-create policy "giornate_delete_open_any" on public.giornate
-  for delete to authenticated using (stato = 'aperta');
 
 -- ---------------------------------------------------------------------------
 -- crepe_conteggi / giornata_stock: conteggi operativi in tempo reale,

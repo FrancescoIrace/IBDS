@@ -4,6 +4,7 @@ import { useAuth } from '../../auth/AuthContext'
 import { useGiornataAttiva } from '../../hooks/useGiornataAttiva'
 import { useEventi } from '../../hooks/useEventi'
 import { useCreateProdotto, useProdotti } from '../../hooks/useProdotti'
+import { useProfiles } from '../../hooks/useProfiles'
 import {
   useApriGiornata,
   useAddStockRow,
@@ -17,7 +18,7 @@ import {
 import { AperturaGiornata } from './AperturaGiornata'
 import { CrepeCounter } from './CrepeCounter'
 import { StockPanel } from './StockPanel'
-import { TurnoWidget } from './TurnoWidget'
+import { TurniPanel } from './TurniPanel'
 import { ChiusuraDialog } from './ChiusuraDialog'
 import { ModificaGiornataDialog } from './ModificaGiornataDialog'
 import { Section } from '../../components/Section'
@@ -26,10 +27,11 @@ import { ConfirmButton } from '../../components/ConfirmButton'
 import { formatData, formatOrario } from '../../lib/format'
 
 export default function GiornataPage() {
-  const { profile } = useAuth()
+  const { profile, isAdmin } = useAuth()
   const { data, isLoading, error } = useGiornataAttiva()
   const { data: eventi = [] } = useEventi()
   const { data: prodotti = [] } = useProdotti()
+  const { data: profiles = [] } = useProfiles()
 
   const apriGiornata = useApriGiornata()
   const updateCrepe = useUpdateCrepeConteggio()
@@ -37,7 +39,7 @@ export default function GiornataPage() {
   const deleteStockRow = useDeleteStockRow()
   const chiudiGiornata = useChiudiGiornata()
   const createProdotto = useCreateProdotto()
-  const { iniziaTurno, terminaTurno } = useGestioneTurno()
+  const { iniziaTurno, terminaTurno, rimuoviTurno } = useGestioneTurno()
   const deleteGiornata = useDeleteGiornata()
   const updateGiornataInfo = useUpdateGiornataInfo()
 
@@ -57,6 +59,13 @@ export default function GiornataPage() {
   }
 
   if (!data) {
+    if (!isAdmin) {
+      return (
+        <Banner tone="info">
+          Nessuna giornata aperta al momento. Chiedi a un amministratore o al boss di aprirla.
+        </Banner>
+      )
+    }
     return (
       <AperturaGiornata
         eventi={eventi}
@@ -70,7 +79,6 @@ export default function GiornataPage() {
   }
 
   const { giornata, evento, crepeConteggio, stockRows, turni } = data
-  const mieTurno = turni.find((t) => t.user_id === profile?.id)
 
   return (
     <Stack gap={6}>
@@ -85,29 +93,39 @@ export default function GiornataPage() {
           </Text>
         </Box>
         <Flex gap={2} wrap="wrap">
-          <Button variant="outline" onClick={() => setModificaOpen(true)}>
-            Modifica
-          </Button>
-          <ConfirmButton
-            label="Elimina giornata"
-            message="Eliminare questa giornata? Andranno persi tutti i conteggi e i turni registrati oggi."
-            isLoading={deleteGiornata.isPending}
-            onConfirm={() => deleteGiornata.mutate(giornata.id)}
-          />
+          {isAdmin && (
+            <>
+              <Button variant="outline" onClick={() => setModificaOpen(true)}>
+                Modifica
+              </Button>
+              <ConfirmButton
+                label="Elimina giornata"
+                message="Eliminare questa giornata? Andranno persi tutti i conteggi e i turni registrati oggi."
+                isLoading={deleteGiornata.isPending}
+                onConfirm={() => deleteGiornata.mutate(giornata.id)}
+              />
+            </>
+          )}
           <Button colorPalette="red" onClick={() => setChiusuraOpen(true)}>
             Chiudi giornata
           </Button>
         </Flex>
       </Flex>
 
-      {profile && (
-        <TurnoWidget
-          turno={mieTurno}
-          isBusy={iniziaTurno.isPending || terminaTurno.isPending}
-          onInizia={() => iniziaTurno.mutate({ giornataId: giornata.id, userId: profile.id })}
+      <Section
+        title="Operatori di oggi"
+        subtitle={isAdmin ? 'Aggiungi chi lavora oggi. A chiusura giornata i turni ancora aperti vengono terminati automaticamente.' : 'Chi sta lavorando in questa giornata.'}
+      >
+        <TurniPanel
+          turni={turni}
+          profiles={profiles}
+          isAdmin={isAdmin}
+          isBusy={iniziaTurno.isPending || terminaTurno.isPending || rimuoviTurno.isPending}
+          onAggiungi={(userId) => iniziaTurno.mutate({ giornataId: giornata.id, userId })}
           onTermina={(turnoId) => terminaTurno.mutate(turnoId)}
+          onRimuovi={(turnoId) => rimuoviTurno.mutate(turnoId)}
         />
-      )}
+      </Section>
 
       <Section title="Conteggio crepes" subtitle="Tocca + o − per aggiornare i conteggi in tempo reale.">
         <CrepeCounter

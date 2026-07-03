@@ -22,11 +22,6 @@ export function useApriGiornata() {
         .insert({ giornata_id: giornata.id })
       if (crepeError) throw crepeError
 
-      const { error: turnoError } = await supabase
-        .from('turni')
-        .insert({ giornata_id: giornata.id, user_id: input.userId, ora_inizio: new Date().toISOString() })
-      if (turnoError) throw turnoError
-
       return giornata
     },
     onSuccess: () => invalidateGiornata(queryClient),
@@ -223,5 +218,13 @@ export function useGestioneTurno() {
     onSuccess: () => invalidateGiornata(queryClient),
   })
 
-  return { iniziaTurno, terminaTurno }
+  const rimuoviTurno = useMutation({
+    mutationFn: async (turnoId: string) => {
+      const { error } = await supabase.from('turni').delete().eq('id', turnoId)
+      if (error) throw error
+    },
+    onSuccess: () => invalidateGiornata(queryClient),
+  })
+
+  return { iniziaTurno, terminaTurno, rimuoviTurno }
 }

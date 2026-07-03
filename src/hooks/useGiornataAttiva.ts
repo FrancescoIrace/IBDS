@@ -1,13 +1,13 @@
 import { useQuery } from '@tanstack/react-query'
 import { supabase } from '../lib/supabaseClient'
-import type { CrepeConteggio, Evento, Giornata, GiornataStock, Prodotto, Turno } from '../types/database'
+import type { CrepeConteggio, Evento, Giornata, GiornataStock, Prodotto, Profile, Turno } from '../types/database'
 
 export interface GiornataAttivaData {
   giornata: Giornata
   evento: Evento | null
   crepeConteggio: CrepeConteggio
   stockRows: (GiornataStock & { prodotto: Prodotto | null })[]
-  turni: Turno[]
+  turni: (Turno & { profile: Profile | null })[]
 }
 
 export function useGiornataAttiva() {
@@ -35,7 +35,11 @@ export function useGiornataAttiva() {
             .select('*, prodotto:prodotti(*)')
             .eq('giornata_id', giornata.id)
             .order('created_at', { ascending: true }),
-          supabase.from('turni').select('*').eq('giornata_id', giornata.id),
+          supabase
+            .from('turni')
+            .select('*, profile:profiles(*)')
+            .eq('giornata_id', giornata.id)
+            .order('created_at', { ascending: true }),
         ])
 
       if (crepeError) throw crepeError
@@ -58,7 +62,7 @@ export function useGiornataAttiva() {
         evento: (evento as Evento | null) ?? null,
         crepeConteggio,
         stockRows: (stockRows ?? []) as (GiornataStock & { prodotto: Prodotto | null })[],
-        turni: (turni ?? []) as Turno[],
+        turni: (turni ?? []) as (Turno & { profile: Profile | null })[],
       }
     },
   })
