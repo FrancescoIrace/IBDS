@@ -10,7 +10,7 @@ import { Section } from '../../components/Section'
 import { Banner } from '../../components/Banner'
 import { StatTile } from '../../components/StatTile'
 
-const CHART_HUE = '#2a78d6'
+const CHART_HUE = '#b3261c'
 const GRID_COLOR = '#e1e0d9'
 const AXIS_COLOR = '#898781'
 

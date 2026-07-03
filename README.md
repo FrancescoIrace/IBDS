@@ -121,8 +121,9 @@ node scripts/generate-icons.mjs
 
 ## Note
 
-- I colori (verde-petrolio minimale) sono un punto di partenza pensato per
-  leggibilità e semplicità d'uso: si possono cambiare in `src/theme/system.ts`.
+- La palette (rosso "Boss" + oro + neutri caldi, ispirata ai colori reali
+  dello stand) è definita in `src/theme/system.ts` tramite i token `brand`,
+  `gold` e `gray`: cambiare quel file aggiorna automaticamente tutta l'app.
 - Non esiste ancora una pagina di dettaglio dedicata per singolo evento: la
   gestione costi/partecipazione avviene espandendo la card evento nella
   pagina Eventi.

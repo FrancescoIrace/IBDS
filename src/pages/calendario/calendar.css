@@ -3,33 +3,33 @@
 }
 
 .ibds-calendar .rbc-toolbar button {
-  color: #194f4c;
+  color: #7a1912;
   border-radius: 8px;
-  border-color: #d3f3ee;
+  border-color: #f6deda;
 }
 
 .ibds-calendar .rbc-toolbar button:hover {
-  background-color: #eefbf9;
+  background-color: #fbefec;
 }
 
 .ibds-calendar .rbc-toolbar button.rbc-active {
-  background-color: #1c7d73;
-  border-color: #1c7d73;
+  background-color: #b3261c;
+  border-color: #b3261c;
   color: white;
 }
 
 .ibds-calendar .rbc-today {
-  background-color: #eefbf9;
+  background-color: #fbefec;
 }
 
 .ibds-calendar .rbc-event {
-  background-color: #1c7d73;
+  background-color: #b3261c;
   border: none;
   border-radius: 6px;
 }
 
 .ibds-calendar .rbc-toolbar-label {
   font-weight: 600;
-  color: #194f4c;
+  color: #7a1912;
   text-transform: capitalize;
 }

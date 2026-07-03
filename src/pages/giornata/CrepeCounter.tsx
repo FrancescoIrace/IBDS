@@ -41,8 +41,8 @@ export function CrepeCounter({
       </SimpleGrid>
 
       {conteggio.totale_impasto > 0 && (
-        <Box mt={5} bg="amber.50" borderWidth="1px" borderColor="orange.200" borderRadius="xl" p={4}>
-          <Text fontSize="sm" fontWeight="semibold" color="orange.800" mb={2}>
+        <Box mt={5} bg="gold.50" borderWidth="1px" borderColor="gold.200" borderRadius="xl" p={4}>
+          <Text fontSize="sm" fontWeight="semibold" color="gold.800" mb={2}>
             Ingredienti stimati per {conteggio.totale_impasto} dosi di impasto
           </Text>
           <SimpleGrid columns={{ base: 2, sm: 5 }} gap={3}>
@@ -61,8 +61,8 @@ export function CrepeCounter({
 function IngredientTile({ label, value }: { label: string; value: string }) {
   return (
     <Box bg="white" borderRadius="lg" px={3} py={2} textAlign="center">
-      <Text fontSize="xs" color="orange.700">{label}</Text>
-      <Text fontSize="md" fontWeight="bold" color="orange.900">{value}</Text>
+      <Text fontSize="xs" color="gold.700">{label}</Text>
+      <Text fontSize="md" fontWeight="bold" color="gold.900">{value}</Text>
     </Box>
   )
 }
