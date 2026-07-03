@@ -1,6 +1,6 @@
-import type { ReactNode } from 'react'
+import { useState, type ReactNode } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
-import { Box, Flex, Stack, Text, IconButton, Separator } from '@chakra-ui/react'
+import { Box, Button, Dialog, Flex, IconButton, Portal, Separator, Stack, Text } from '@chakra-ui/react'
 import {
   FiClipboard,
   FiTag,
@@ -32,10 +32,12 @@ const NAV_ITEMS: NavItem[] = [
 export default function Layout({ children }: { children: ReactNode }) {
   const { profile, isAdmin, signOut } = useAuth()
   const navigate = useNavigate()
+  const [logoutConfirmOpen, setLogoutConfirmOpen] = useState(false)
 
   const visibleItems = NAV_ITEMS.filter((item) => !item.adminOnly || isAdmin)
 
   const handleLogout = async () => {
+    setLogoutConfirmOpen(false)
     await signOut()
     navigate('/login', { replace: true })
   }
@@ -101,7 +103,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             color="red.600"
             cursor="pointer"
             _hover={{ bg: 'red.50' }}
-            onClick={handleLogout}
+            onClick={() => setLogoutConfirmOpen(true)}
           >
             <Box as={FiLogOut} boxSize={4} />
             <Text fontSize="sm" fontWeight="medium">Esci</Text>
@@ -126,7 +128,7 @@ export default function Layout({ children }: { children: ReactNode }) {
           zIndex={10}
         >
           <Text fontSize="lg" fontWeight="bold" color="brand.700">IBDS</Text>
-          <IconButton aria-label="Esci" variant="ghost" size="sm" onClick={handleLogout}>
+          <IconButton aria-label="Esci" variant="ghost" size="sm" onClick={() => setLogoutConfirmOpen(true)}>
             <FiLogOut />
           </IconButton>
         </Flex>
@@ -172,6 +174,23 @@ export default function Layout({ children }: { children: ReactNode }) {
           ))}
         </Flex>
       </Flex>
+
+      <Dialog.Root open={logoutConfirmOpen} onOpenChange={(e) => setLogoutConfirmOpen(e.open)} size="sm" placement="center">
+        <Portal>
+          <Dialog.Backdrop />
+          <Dialog.Positioner>
+            <Dialog.Content>
+              <Dialog.Header>
+                <Dialog.Title>Vuoi tornare al Login?</Dialog.Title>
+              </Dialog.Header>
+              <Dialog.Footer>
+                <Button variant="outline" onClick={() => setLogoutConfirmOpen(false)}>No</Button>
+                <Button colorPalette="red" onClick={handleLogout}>Sì</Button>
+              </Dialog.Footer>
+            </Dialog.Content>
+          </Dialog.Positioner>
+        </Portal>
+      </Dialog.Root>
     </Flex>
   )
 }
