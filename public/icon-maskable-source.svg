@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <rect width="512" height="512" fill="#1c7d73"/>
+  <g transform="translate(256 236) scale(0.62) translate(-256 -256)">
+    <circle cx="256" cy="222" r="118" fill="none" stroke="#eefbf9" stroke-width="26"/>
+    <path d="M158 300 C 158 300, 200 372, 256 372 C 312 372, 354 300, 354 300" fill="none" stroke="#eefbf9" stroke-width="26" stroke-linecap="round"/>
+    <text x="256" y="452" font-family="Segoe UI, system-ui, sans-serif" font-size="72" font-weight="700" fill="#eefbf9" text-anchor="middle">IBDS</text>
+  </g>
+</svg>

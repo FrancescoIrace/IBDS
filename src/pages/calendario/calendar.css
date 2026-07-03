@@ -1,0 +1,35 @@
+.ibds-calendar {
+  font-family: inherit;
+}
+
+.ibds-calendar .rbc-toolbar button {
+  color: #194f4c;
+  border-radius: 8px;
+  border-color: #d3f3ee;
+}
+
+.ibds-calendar .rbc-toolbar button:hover {
+  background-color: #eefbf9;
+}
+
+.ibds-calendar .rbc-toolbar button.rbc-active {
+  background-color: #1c7d73;
+  border-color: #1c7d73;
+  color: white;
+}
+
+.ibds-calendar .rbc-today {
+  background-color: #eefbf9;
+}
+
+.ibds-calendar .rbc-event {
+  background-color: #1c7d73;
+  border: none;
+  border-radius: 6px;
+}
+
+.ibds-calendar .rbc-toolbar-label {
+  font-weight: 600;
+  color: #194f4c;
+  text-transform: capitalize;
+}
